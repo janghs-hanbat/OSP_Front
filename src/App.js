@@ -11,16 +11,47 @@ import placeholderImage2 from "./assets/1page_howtouse_2.webp";
 import placeholderImage3 from "./assets/1page_howtouse_3.webp";
 import hbuLogo from "./assets/hbu_logo.png";
 import backgroundImage from "./assets/temp_back2_brightened.jpg";
+import applelogo from "./assets/apple_logo.png";
 
 // Dashboard 이미지 예제
-import itDevicesImage from "./assets/apple_logo.png";
-import homeAppliancesImage from "./assets/lg_logo.png";
-import healthWellnessImage from "./assets/samsung_logo.png";
+import itDevicesImage from "./assets/it_devices.webp";
+import homeAppliancesImage from "./assets/home_appliance.webp";
+import healthWellnessImage from "./assets/health&wellness.webp";
 import othersImage from "./assets/etc_removed_background.png";
 
 function App() {
   const [query, setQuery] = useState("");
   const [error, setError] = useState("");
+
+  // Dashboard 드롭다운 상태 추가 (수정됨)
+  const [dashboardDropdowns, setDashboardDropdowns] = useState({
+    0: false,
+    1: false,
+    2: false,
+    3: false,
+  });
+
+  // 드롭다운 토글 함수 추가 (수정됨)
+  const handleDropdownToggle = (index) => {
+    setDashboardDropdowns((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
+
+  // Apple 전용관 상품 데이터 및 섹션 추가 (수정됨)
+  const appleProducts = [
+    { name: "iPhone 15", image: "https://via.placeholder.com/300" },
+    { name: "MacBook Pro", image: "https://via.placeholder.com/300" },
+    { name: "iPad Air", image: "https://via.placeholder.com/300" },
+    { name: "Apple Watch Ultra", image: "https://via.placeholder.com/300" },
+    { name: "AirPods Pro", image: "https://via.placeholder.com/300" },
+    { name: "Apple TV", image: "https://via.placeholder.com/300" },
+    { name: "iMac", image: "https://via.placeholder.com/300" },
+    { name: "HomePod Mini", image: "https://via.placeholder.com/300" },
+  ];
+
 
   const handleSearch = async () => {
     if (query) {
@@ -56,11 +87,11 @@ function App() {
                 justify-content: center;
               }
               .app-bar h1 {
-                color: #9B9D9E;
+                color: #FFFFFF;
                 font-size: 40px;
                 margin: 0;
                 font-family: Montserrat, sans-serif;
-                font-weight: 200;
+                font-weight: 500;
               }
               .result-container {
                 max-width: 1200px;
@@ -101,7 +132,7 @@ function App() {
                 left: 600px; /*아래에서 600은 좌 1000은 우 800은 가운데*/
                 width: 600px;
                 background-color: #222529;
-                color: #989D9E;
+                color: #FFFFFF;
                 padding: 20px 40px;
                 border: none;
                 border-radius: 8px;
@@ -213,62 +244,77 @@ function App() {
       <head>
         <title>Apple 전용관</title>
         <style>
+          @import url('https://fonts.googleapis.com/css?family=Nanum+Gothic:800')
+
           body {
+            font-family: 'Nanum Gothic', sans-serif; /* 나눔 고딕 폰트 적용 */
             margin: 0;
             font-family: Montserrat, sans-serif;
             background-color: #ffffff;
             color: #000000;
           }
           header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            background-color: #ffffff;
+          text-align: center;
+          padding: 20px 0;
+        }
+
+        header img {
+          display: block;
+          margin: 0 auto;
+          width: 150px;
+          height: auto;
+        }
+
+        header h1 {
+          font-size: 3rem;
+          font-weight: bold;
+          margin: 10px 0;
+        }
+          .products-section {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 20px;
           }
-          header h1 {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #000000;
+          .product-card {
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            padding: 10px;
           }
-          nav a {
-            margin-left: 20px;
-            text-decoration: none;
-            font-size: 1.2rem;
-            color: #555;
-          }
-          nav a:hover {
-            color: #000;
-          }
-          .banner {
-            position: relative;
+          .product-card img {
             width: 100%;
-            height: 400px;
-            background: url('https://via.placeholder.com/1600x400') no-repeat center center/cover;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            height: auto;
+            border-radius: 8px;
           }
-          .banner h2 {
-            color: white;
-            font-size: 3rem;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+          .product-name {
+            margin-top: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
           }
         </style>
       </head>
       <body>
-        <header>
-          <h1>Apple 전용관</h1>
-          <nav>
-            <a href="#">HOME</a>
-            <a href="#">STYLE</a>
-            <a href="#">SHOP</a>
-          </nav>
-        </header>
-        <div class="banner">
-          <h2>Apple</h2>
+  <header>
+    <!-- 이미지 추가 -->
+    <img src="${applelogo}" alt="Apple Logo" />
+    <h1>Apple 전용관</h1>
+  </header>
+  <section class="products-section">
+    ${appleProducts
+      .map(
+        (product) => `
+        <div class="product-card">
+          <img src="${product.image}" alt="${product.name}" />
+          <div class="product-name">${product.name}</div>
         </div>
-      </body>
+      `
+      )
+      .join("")}
+  </section>
+</body>
+
       </html>
     `);
   };
@@ -287,12 +333,28 @@ function App() {
     }
   };
 
+  // Dashboard 데이터에 상품명 추가 (수정됨)
   const dashboardData = [
-    // Dashboard 항목 데이터 변경: subheading 제거 및 이미지 추가
-    { title: "IT Devices", image: itDevicesImage },
-    { title: "Home Appliances", image: homeAppliancesImage },
-    { title: "Health & Wellness", image: healthWellnessImage },
-    { title: "Others", image: othersImage },
+    {
+      title: "IT Devices",
+      image: itDevicesImage,
+      products: ["Laptop", "Smartphone", "Tablet", "Smartwatch"],
+    },
+    {
+      title: "Home Appliances",
+      image: homeAppliancesImage,
+      products: ["Refrigerator", "Microwave", "Air Conditioner", "Washing Machine"],
+    },
+    {
+      title: "Health & Wellness",
+      image: healthWellnessImage,
+      products: ["Treadmill", "Yoga Mat", "Massager", "Supplements"],
+    },
+    {
+      title: "Others",
+      image: othersImage,
+      products: ["Books", "Clothing", "Accessories", "Toys"],
+    },
   ];
 
   return (
@@ -614,11 +676,12 @@ function App() {
             <Box
               key={index}
               sx={{
-                backgroundColor:"#333",
-                borderRadius: "12px",
-                padding: "30px",
+                backgroundColor: "#333",
+                borderRadius: "20px",
+                padding: "7px",
                 color: "#FFFFFF",
               }}
+              onClick={() => handleDropdownToggle(index)} // 드롭다운 기능 추가 (수정됨)
             >
               <img
                 src={data.image}
@@ -626,14 +689,19 @@ function App() {
                 style={{
                   width: "100%",
                   height: "auto",
-                  borderRadius: "8px",
+                  borderRadius: "20px",
                   marginBottom: "10px",
                 }}
               />
-              <Typography variant="h5" sx={{ fontSize: "2rem", mb: 1 }}>
+              <Typography variant="h5" sx={{ fontSize: "2rem", mb: 1, textAlign: "center",fontWeight: "bold", }}> 
                 {data.title}
               </Typography>
-              <Typography variant="body1">{data.subheading}</Typography>
+              {dashboardDropdowns[index] &&
+                data.products.map((product, i) => (
+                  <Typography key={i} variant="body1" sx={{ fontSize: "1.5rem", marginTop: "5px" }}>
+                    {product}
+                  </Typography>
+                ))}
             </Box>
           ))}
         </Box>
