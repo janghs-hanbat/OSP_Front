@@ -42,7 +42,7 @@ function App() {
 
   // Apple 전용관 상품 데이터 및 섹션 추가 (수정됨)
   const appleProducts = [
-    { name: "iPhone 15", image: "https://via.placeholder.com/300" },
+    { name: "1", image: "https://via.placeholder.com/300" },
     { name: "MacBook Pro", image: "https://via.placeholder.com/300" },
     { name: "iPad Air", image: "https://via.placeholder.com/300" },
     { name: "Apple Watch Ultra", image: "https://via.placeholder.com/300" },
@@ -52,12 +52,13 @@ function App() {
     { name: "HomePod Mini", image: "https://via.placeholder.com/300" },
   ];
 
-
-  const handleSearch = async () => {
-    if (query) {
+  // 검색 핸들러: 상품명을 받아 검색 결과 페이지 생성
+  const handleSearch = async (productName = "") => {
+    const searchQuery = productName || query; // productName이 있으면 사용, 없으면 query 사용
+    if (searchQuery) {
       try {
         const response = await axios.get(
-          `https://jsonplaceholder.typicode.com/posts/${query}`
+          `https://jsonplaceholder.typicode.com/posts/${searchQuery}`
         );
         const { title, body } = response.data;
 
@@ -230,10 +231,16 @@ function App() {
     }
   };
 
+  
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       handleSearch();
     }
+  };
+
+  const handleAppleExclusiveClick = (productName) => {
+    handleSearch(productName); // 검색 함수 호출
   };
 
   const handleAppleExclusive = () => {
@@ -338,7 +345,7 @@ function App() {
     {
       title: "IT Devices",
       image: itDevicesImage,
-      products: ["Laptop", "Smartphone", "Tablet", "Smartwatch"],
+      products: ["1", "Smartphone", "Tablet", "Smartwatch"],
     },
     {
       title: "Home Appliances",
@@ -698,10 +705,72 @@ function App() {
               </Typography>
               {dashboardDropdowns[index] &&
                 data.products.map((product, i) => (
-                  <Typography key={i} variant="body1" sx={{ fontSize: "1.5rem", marginTop: "5px" }}>
+                  <Typography key={i} variant="body1" sx={{ fontSize: "1.5rem", marginTop: "5px",cursor: "pointer",  }}
+                  onClick={() => handleSearch(product)} // 클릭 시 검색 실행 (수정됨)
+                  >
                     {product}
                   </Typography>
                 ))}
+            </Box>
+          ))}
+        </Box>
+      </Box>
+
+      {/* Apple 전용관 */}
+      <Box sx={{ padding: "20px", textAlign: "center", marginTop: "20px" }}>
+        <img
+          src={applelogo}
+          alt="Apple Logo"
+          style={{
+            display: "block",
+            margin: "0 auto 20px",
+            width: "150px",
+            height: "auto",
+          }}
+        />
+        <Typography variant="h4" sx={{ fontSize: "3rem", fontWeight: "bold", mb: 2 }}>
+          Apple 전용관
+        </Typography>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "20px",
+            padding: "20px",
+          }}
+        >
+          {appleProducts.map((product, index) => (
+            <Box
+              key={index}
+              sx={{
+                textAlign: "center",
+                border: "1px solid #ccc",
+                borderRadius: "12px",
+                padding: "10px",
+                cursor: "pointer",
+              }}
+              onClick={() => handleAppleExclusiveClick(product.name)} // 클릭 이벤트 추가
+            >
+              <img
+                src={product.image}
+                alt={product.name}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  borderRadius: "8px",
+                  marginBottom: "10px",
+                }}
+              />
+              <Typography
+                variant="body1"
+                sx={{
+                  fontSize: "1.2rem",
+                  fontWeight: "bold",
+                  color: "#333",
+                }}
+              >
+                {product.name}
+              </Typography>
             </Box>
           ))}
         </Box>
